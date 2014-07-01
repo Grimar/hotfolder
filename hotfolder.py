@@ -4,7 +4,9 @@
 import os
 import shutil
 import sys
-import queue
+import multiprocessing as mp
+import sched
+import time
 
 folder = os.path.normpath("C:\\hotfolder")
 if not os.path.exists(folder):
@@ -14,15 +16,24 @@ output = os.path.join(folder, 'output')
 if not os.path.exists(output):
     os.mkdir(output)
 
-q = queue.Queue()
+q = mp.Queue()
 
 threads = 4
 
+
+
 def queue_add():
     for root, dirs, files in os.walk(folder):
-        if not os.path.samefile(dirs, output):
-            for file in files:
-                q.put(file)
+        for dir in dirs:
+            if not os.path.abspath(dir) == output:
+                for file in files:
+                    q.put(file)
+                    print(file, 'added to queue')
 
-print("EOL")
-sys.exit(0)
+def timer():
+    pass
+
+if __name__=="__main__":
+    p = mp.Process(target=queue_add)
+    p.start()
+    p.join()
