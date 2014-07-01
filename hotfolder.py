@@ -5,8 +5,8 @@ import os
 import shutil
 import sys
 import multiprocessing as mp
-import sched
 import time
+#import sched
 
 folder = os.path.normpath("C:\\hotfolder")
 if not os.path.exists(folder):
@@ -30,10 +30,16 @@ def queue_add():
                     q.put(file)
                     print(file, 'added to queue')
 
-def timer():
-    pass
+def worker():
+    q.get()
+
+def worker_timer(t=10):
+    while True:
+        queue_add()
+        worker()
+        time.sleep(t)
 
 if __name__=="__main__":
-    p = mp.Process(target=queue_add)
+    p = mp.Process(target=queue_timer)
     p.start()
     p.join()
