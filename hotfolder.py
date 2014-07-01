@@ -18,5 +18,11 @@ q = queue.Queue()
 
 threads = 4
 
+def queue_add():
+    for root, dirs, files in os.walk(folder):
+        if not os.path.samefile(dirs, output):
+            for file in files:
+                q.put(file)
+
 print("EOL")
 sys.exit(0)
