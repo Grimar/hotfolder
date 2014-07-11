@@ -1,11 +1,11 @@
 #!usr/bin/python3.4
-#TODO some important stuff
 
 import os
 import shutil
 import sys
 import multiprocessing as mp
 import time
+import socket
 #import sched
 
 folder = os.path.normpath("C:\\hotfolder")
@@ -16,7 +16,7 @@ output = os.path.join(folder, 'output')
 if not os.path.exists(output):
     os.mkdir(output)
 
-q = mp.Queue()
+q = []
 
 threads = 4
 thread_list=[]
@@ -26,12 +26,12 @@ def queue_add():
         for dir in dirs:
             if not os.path.abspath(dir) == output:
                 for file in files:
-                    q.put(file)
+                    q.append(file)
                     print(file, 'added to queue')
 
 
-def worker():
-    print(q.get())
+def worker(command=''):
+    print(q[-1:])
 
 
 def worker_timer(t=10):
@@ -40,10 +40,26 @@ def worker_timer(t=10):
         worker()
         time.sleep(t)
 
+def conn(port=1027):
+    sock=socket.socket()
+    sock.bind(('',port))
+    sock.listen(1)
+    print('Listening on port', port)
+    conn, addr = sock.accept()
+    print('Connected:', conn, port)
+
+
 if __name__ == "__main__":
     if threads >= 0:
         p = mp.Process(target=worker_timer)
         threads -= 1
         thread_list.append("worker_timer")
         p.start()
+    if threads >=0:
+        c = mp.Process(target=conn)
+        threads -= 1
+        thread_list.append("conn")
+        c.start()
+
         p.join()
+        c.join()
