@@ -43,10 +43,11 @@ def worker_timer(t=10):
 def conn(port=1027):
     sock=socket.socket()
     sock.bind(('',port))
-    sock.listen(1)
+    sock.listen(5)
     print('Listening on port', port)
     conn, addr = sock.accept()
-    print('Connected:', conn, port)
+    print('Connected: on port', addr)
+    conn.send(b'You connected to me!')
 
 
 if __name__ == "__main__":
