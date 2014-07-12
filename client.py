@@ -1,10 +1,12 @@
 #!usr/bin/python3.4
 import socket
+import pickle
 
 sock = socket.socket()
 sock.connect(('127.0.0.1', 1027))
 data = sock.recv(1024)
 #    sock.close()
-print (data.decode('UTF-8'))
+s_data=pickle.loads(data)
+print (s_data)
 sock.close()
 input()

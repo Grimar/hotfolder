@@ -6,6 +6,7 @@ import sys
 import multiprocessing as mp
 import time
 import socket
+import pickle
 #import sched
 
 folder = os.path.normpath("C:\\hotfolder")
@@ -46,8 +47,9 @@ def conn(port=1027):
     sock.listen(5)
     print('Listening on port', port)
     conn, addr = sock.accept()
-    print('Connected: on port', addr)
-    conn.send(b'You connected to me!')
+    print('Connected: on address', addr)
+#    conn.send(data)
+    conn.send(pickle.dumps(data))
 
 
 if __name__ == "__main__":
