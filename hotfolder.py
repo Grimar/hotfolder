@@ -23,6 +23,7 @@ threads = 4
 thread_list=[]
 
 def queue_add():
+    global q
     for root, dirs, files in os.walk(folder):
         for dir in dirs:
             if not os.path.abspath(dir) == output:
@@ -31,14 +32,15 @@ def queue_add():
                     print(file, 'added to queue')
 
 
-def worker(command=''):
-    print(q[-1:])
+def worker( command=''):
+    global q
+    print([-1:])
 
 
 def worker_timer(t=10):
     while True:
-        queue_add()
-        worker()
+        queue_add(q)
+        worker(q)
         time.sleep(t)
 
 def conn(thread_list, q, port=1027, timeout=5):
