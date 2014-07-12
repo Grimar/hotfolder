@@ -41,28 +41,28 @@ def worker_timer(t=10):
         worker()
         time.sleep(t)
 
-def conn(port=1027):
+def conn(thread_list, q, port=1027, timeout=5):
     sock=socket.socket()
     sock.bind(('',port))
     sock.listen(5)
     print('Listening on port', port)
     conn, addr = sock.accept()
     print('Connected: on address', addr)
-#    conn.send(data)
-    conn.send(pickle.dumps(data))
+#   conn.send(data)
+    while conn:
+        conn.send(pickle.dumps([thread_list, q]))
+        time.sleep(timeout)
+    conn.close()
+
 
 
 if __name__ == "__main__":
-    if threads >= 0:
-        p = mp.Process(target=worker_timer)
+    if threads >= 2:
         threads -= 1
         thread_list.append("worker_timer")
+        p = mp.Process(target=worker_timer)
         p.start()
-    if threads >=0:
-        c = mp.Process(target=conn)
         threads -= 1
         thread_list.append("conn")
+        c = mp.Process(target=conn(thread_list, q))
         c.start()
-
-        p.join()
-        c.join()
