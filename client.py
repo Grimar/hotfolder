@@ -1,13 +1,13 @@
-#!usr/bin/python3.4
-import socket
-import pickle
+from PyQt4 import QtGui
+import sys
+def main():
+    app = QtGui.QApplication(sys.argv)
+    w = QtGui.QWidget()
+    table = QtGui.QTableWidget(5,5,w)
+    table.move(0,0)
 
-sock = socket.socket()
-sock.connect(('127.0.0.1', 1027))
-while True:
-    data = sock.recv(1024)
-#   sock.close()
-    s_data=pickle.loads(data)
-    print (s_data)
-sock.close()
-input()
+    w.show()
+    sys.exit(app.exec_())
+
+if __name__ == '__main__':
+    main()
