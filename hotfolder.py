@@ -31,7 +31,7 @@ class Queue():
 
 class Folder():
 
-    def __init__(self, path, name = "untitled", time = 10, queue = [Queue()]):
+    def __init__(self, path, name = "untitled", time = 10, queue = [Queue()], exec = Executor()):
         self.name = name
         self.path = path
         self.time = time
