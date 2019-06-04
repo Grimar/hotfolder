@@ -1,18 +1,32 @@
 from PyQt5 import QtWidgets, QtGui
+from PyQt5.QtCore import pyqtSlot
 import sys
+import hotfolder
+from ui import mainwindow, folderDialog
+import os.path
+
+
+class HfMain(QtWidgets.QMainWindow, mainwindow.Ui_MainWindow):
+    def __init__(self, parent=None):
+        super(HfMain, self).__init__(parent)
+        self.setupUi(self)
+        self.folderButton.clicked.connect(self.addFolder)
+
+    @pyqtSlot()
+    def addFolder(self):
+        self.dialog = QtWidgets.QDialog()
+        self.dialog.ui = folderDialog.Ui_Dialog()
+        self.dialog.ui.setupUi(self.dialog)
+        self.dialog.show()
+        self.dialog.exec_()
+
+
 def main():
     app = QtWidgets.QApplication(sys.argv)
-    w = QtWidgets.QWidget()
-    table = QtWidgets.QTableWidget(5,5,w)
-    table.move(0,0)
-    w.setWindowTitle("Hotfolder client 0.1")
-    w.setWindowIcon(QtGui.QIcon("icon.png"))
-    w.setMinimumSize(400,300)
-    table.resize(w.size())
-
+    w = HfMain()
     w.show()
-    sys.exit(app.exec())
+    app.exec_()
+
 
 if __name__ == '__main__':
     main()
-

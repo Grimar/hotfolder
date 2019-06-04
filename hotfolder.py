@@ -28,6 +28,11 @@ class Queue():
     def append(self, obj):
         pass
 
+class Executor():
+
+    def __init__(self):
+        pass
+
 
 class Folder():
 
@@ -45,8 +50,5 @@ class Folder():
 
 
 
-class Executor():
 
-    def __init__(self):
-        pass
 
